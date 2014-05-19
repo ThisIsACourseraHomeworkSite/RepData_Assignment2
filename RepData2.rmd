@@ -1,0 +1,68 @@
+Severe Weather in the United States
+========================================================
+# Synopsis
+
+
+Across the United States, which types of events (as indicated in the EVTYPE variable) are most harmful with respect to popuulation health?
+
+Across the United States, which types of events have the greatest economic consequences?
+
+Load libraries
+
+```{r, echo = TRUE}
+
+```
+
+# Data Processing
+
+Open data
+
+```{r, echo = TRUE, cache=TRUE}
+data = read.csv("repdata-data-StormData.csv")
+```
+
+head(data)
+
+
+```{r, echo = TRUE}
+head(data)
+```
+
+# Results
+## Most harmful to population health
+
+```{r, echo = TRUE}
+fatality_sum = tapply(data$FATALITIES, data$EVTYPE, sum)
+fat = data.frame(fatality_sum, names(fatality_sum))
+injury_sum = tapply(data$INJURIES, data$EVTYPE, sum)
+inj = data.frame(injury_sum, names(injury_sum))
+occurrences = table(data$EVTYPE)
+occ = data.frame(occurrences)
+j = as.data.frame(cbind(occ$Freq,fat$fatality_sum, inj$injury_sum))
+colnames(j) = c("Occurrences", "Fatalities", "Injuries")
+j$fatality_per_occurrence = j$Fatalities / j$Occurrences
+j$injuries_per_occurrence = j$Injuries / j$Occurrences
+
+head(j[with(j, order(desc(j$injuries_per_occurence))),])
+head(j[with(j, order(desc(j$fatality_per_occurence))),])
+head(rev(sort(fatality_sum)))
+head(rev(sort(injury_sum)))
+head(rev(sort(occurrences)))
+```
+
+## Greatest economic consequences
+
+```{r, echo = TRUE}
+
+```
+
+
+
+
+
+
+
+
+```{r, echo = TRUE}
+
+```
